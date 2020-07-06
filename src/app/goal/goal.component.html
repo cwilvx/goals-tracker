@@ -1,0 +1,22 @@
+<div class="container-fluid card" style="padding: 30px;">
+	<h1 class="btn btn-danger btn-block disabled" style="border-radius: 0;" >My Goals</h1>
+	<hr>
+  
+	<div class="row">
+	  <div class="col-md-6 card" style="padding: 30px;  margin: 10px;">
+		<div *ngFor='let goal of goals;let i = index'>
+		  <div class="card" style="margin-top: 10px; padding: 10px;">
+			<p id={{i}} appStrikethrough>{{goal.name}} due on {{goal.cdate|date|uppercase}}</p>
+			<button (click)='toggleDetails(i)' class="btn btn-primary">Toggle Details</button>
+		  </div>
+	  	  <app-goal-detail [goal]='goal' (isComplete)='DeleteGoal($event,i)' *ngIf='goal.show'></app-goal-detail>
+		</div>
+	  </div>
+	  <div class="col col-md-5.8 card" style="padding: 30px; margin: 10px;">
+		<app-goal-form (addGoal)='addNewGoal($event)'></app-goal-form>
+	  </div>
+	</div>
+	
+	<p *ngIf='goals.length > 5'>You have too many goals</p>
+  </div>
+  
