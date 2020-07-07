@@ -8,9 +8,9 @@
 		<div *ngFor='let goal of goals;let i = index'>
 		  <div class="card" style="margin-top: 10px; padding: 10px;">
 			<p id={{i}} appStrikethrough>{{goal.name}} due on {{goal.cdate|date|uppercase}}</p>
-			<button (click)='toggleDetails(i)' class="btn btn-primary">Toggle Details</button>
+			<button class="btn btn-primary" (click)='goToUrl(goal.id)'>View Details</button>
+          <button class="btn btn-outline-danger" (click)='DeleteGoal($event,i)'>Delete Goal</button>
 		  </div>
-	  	  <app-goal-detail [goal]='goal' (isComplete)='DeleteGoal($event,i)' *ngIf='goal.show'></app-goal-detail>
 		</div>
 	  </div>
 	  <div class="col col-md-5.8 card" style="padding: 30px; margin: 10px;">
@@ -26,4 +26,3 @@
 		</blockquote>
 	</div>
   </div>
-  

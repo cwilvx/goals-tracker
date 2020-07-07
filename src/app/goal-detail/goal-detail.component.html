@@ -1,3 +1,16 @@
-<p style="color: crimson;">{{goal.description}}</p>
-<p>Time remaining: {{goal.cdate|dateCount}} days</p>
-<button class="btn btn-danger btn-block" (click)='goalDelete(true)'>Delete</button>
+<div class="row">
+	<div class="col-md-2">
+  
+	</div>
+	<div class="col-md-8">
+	  <div class="card">
+		<div class="card-body">
+		  <h5 class="card-title">{{goal.description}}</h5>
+		  <p class="card-text">This goal will be complete in {{goal.cdate|dateCount}} days.</p>
+		</div>
+	  </div>
+	</div>
+	<div class="col-md-2">
+  
+	</div>
+  </div>

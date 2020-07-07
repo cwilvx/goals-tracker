@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Goals } from '../goals';
+import { Goal } from '../goal';
+import { GoalService } from '../goal-service/goal.service';
 import { AlertService } from '../alert-service/alert.service';
 import { Quote } from '../quote-class/quote';
 import { QuoteRequestService } from '../quote-http/quote-request.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-goal',
@@ -12,9 +14,14 @@ import { QuoteRequestService } from '../quote-http/quote-request.service'
 })
 export class GoalComponent implements OnInit {
 
-  goals = Goals;
+  goals:Goal[];
   alertService:AlertService;
   quote: Quote;
+
+ 
+  goToUrl(id){
+    this.router.navigate(['/goals',id])
+  }
 
   toggleDetails(index){
     this.goals[index].show = !this.goals[index].show;
@@ -38,7 +45,8 @@ export class GoalComponent implements OnInit {
     }
   }
 
-  constructor(alertService:AlertService,private quoteService:QuoteRequestService) {
+  constructor(goalService:GoalService,alertService:AlertService,private quoteService:QuoteRequestService,private router:Router) {
+    this.goals = goalService.getGoals()
     this.alertService = alertService;
   }
 
