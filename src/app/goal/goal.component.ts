@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Goals } from '../goals';
 import { AlertService } from '../alert-service/alert.service';
 import { Quote } from '../quote-class/quote';
+import { QuoteRequestService } from '../quote-http/quote-request.service'
 
 @Component({
   selector: 'app-goal',
@@ -37,21 +38,13 @@ export class GoalComponent implements OnInit {
     }
   }
 
-  constructor(alertService:AlertService,private http:HttpClient) {
+  constructor(alertService:AlertService,private quoteService:QuoteRequestService) {
     this.alertService = alertService;
   }
 
   ngOnInit() {
-    interface ApiResponse{
-      author: string;
-      quote: string;
-    }
-    this.http.get<ApiResponse>('http://quotes.stormconsultancy.co.uk/random.json').subscribe(data=>{
-      this.quote = new Quote(data.author,data.quote)
-    },err=>{
-      this.quote = new Quote('Winston Churchill','Never give up')
-      console.log('An error occured')
-    })
+    this.quoteService.quoteRequest()
+    this.quote = this.quoteService.quote
   }
 
 }
