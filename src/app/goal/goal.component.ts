@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Goal } from '../goal';
+import { HttpClient } from '@angular/common/http';
+import { Goals } from '../goals';
+import { AlertService } from '../alert-service/alert.service';
+import { Quote } from '../quote-class/quote';
+
 @Component({
   selector: 'app-goal',
   templateUrl: './goal.component.html',
@@ -7,15 +11,10 @@ import { Goal } from '../goal';
 })
 export class GoalComponent implements OnInit {
 
-  goals: Goal[] = [
-   new Goal (1,'Watch Finding Nemo','Because its 2020 and ive never watched it',new Date(2020,8,18)),
-   new Goal (2,'Eat and drink like a pro','Yeah,cause i deserve it',new Date(2020,7,18)),
-   new Goal (3,'Sleep upto 12 pm','Because i didnt sleep right tonight',new Date(2020,1,18)),
-   new Goal (4,'Deploy my app to heroku','Or my resume will be dry',new Date(2020,2,18)),
-   new Goal (5,'Add views counter to baseline','To make myself look cool',new Date(2020,5,18)),
-   new Goal (6,'Add sidebar to baseline','It would be a plus',new Date(2020,3,18)),
-   new Goal (7,'Plot my world domination plan','Holy shit! did I write this',new Date(2020,10,18)),
-  ];
+  goals = Goals;
+  alertService:AlertService;
+  quote: Quote;
+
   toggleDetails(index){
     this.goals[index].show = !this.goals[index].show;
   }
@@ -32,14 +31,24 @@ export class GoalComponent implements OnInit {
       let toDelete = confirm(`Are you sure you want to delete ${this.goals[index].name}?`)
       if (toDelete){
         this.goals.splice(index,1)
+        this.alertService.alertMe('The goal has been deleted')
       }
       
     }
   }
 
-  constructor() { }
+  constructor(alertService:AlertService,private http:HttpClient) {
+    this.alertService = alertService;
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    interface ApiResponse{
+      author: string;
+      quote: string;
+    }
+    this.http.get<ApiResponse>('http://quotes.stormconsultancy.co.uk/random.json').subscribe(data=>{
+      this.quote = new Quote(data.author,data.quote)
+    })
   }
 
 }
